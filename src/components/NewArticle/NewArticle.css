@@ -1,0 +1,28 @@
+.container-div {
+    background-color: #d3d1d1;
+    height: 100%;
+    width: 80%;
+}
+
+.component-div {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.article-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.article-form input, label, textarea {
+    margin: 0.5rem 0;
+    width: 70%;
+    font-size: 1.5em;
+}
+
+.article-form textarea {
+    overflow-y: scroll;
+}
+

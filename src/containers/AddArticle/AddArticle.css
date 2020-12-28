@@ -1,0 +1,24 @@
+.add-article {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-article button {
+    margin: 1rem;
+    font-size: 1.2rem;
+    background-color: #ee4f05;
+    color: white;
+    border: 1px solid #ee4f05;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+.add-article button:hover,
+.add-article button:active {
+    cursor: pointer;
+    background-color: white;
+    color: #ee4f05;
+}
+

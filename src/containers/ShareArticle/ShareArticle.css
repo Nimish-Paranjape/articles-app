@@ -1,0 +1,33 @@
+.outer-div {
+    display: flex;
+    justify-content: space-between;
+    align-items:flex-start;
+    background-color: #d3d1d1;
+}
+
+.article-thumbnail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.share-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.connections {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkboxes {
+    display: flex;
+    justify-content: center;
+}

@@ -1,8 +1,8 @@
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import { BrowserRouter, Route } from 'react-router-dom'
-import Articles from './containers/Articles/Articles';
-import NewArticle from './containers/NewArticle/NewArticle';
+import ShowArticles from './containers/ShowArticles/ShowArticles';
+import AddArticle from './containers/AddArticle/AddArticle';
 
 function App() {
   return (
@@ -10,10 +10,10 @@ function App() {
       <div className="App">
         <Navbar />
         <Route path='/articles'>
-          <Articles />
+          <ShowArticles />
         </Route>
         <Route path='/add-article'>
-          <NewArticle />
+          <AddArticle />
         </Route>
       </div>
     </BrowserRouter>
