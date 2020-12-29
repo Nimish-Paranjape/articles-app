@@ -198,7 +198,7 @@ const ShareArticle = props => {
                         <p>{form.error}</p>
                     </div>
                 ) : null}
-                <button type="button" onClick={shareHandler} >Share</button>
+                <button type="button" disabled={!form.valid} onClick={shareHandler}>Share</button>
             </div>
             <button type="button" onClick={() => props.click(false)}>X</button>
         </div>

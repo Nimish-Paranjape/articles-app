@@ -2,13 +2,39 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchArticlesInit, deleteArticle } from '../../store/actions';
 import SingleArticle from '../../components/SingleArticle/SingleArticle';
+import Pagination from '../../components/Pagination/Pagination';
 
 const Articles = props => {
-
-    useEffect(() => props.fetchArticlesInit(1), []);
+    
+    useEffect(() => {
+        const search = props.location.search;
+        const params = new URLSearchParams(search);
+        let page = params.get('page');
+        if(!page)
+            page = 1;
+        console.log(page);
+        props.fetchArticlesInit(page);
+    }, [props.location]);
 
     const deleteHandler = id => {
         props.deleteArticle(id);
+    }
+
+    const getPage = () => {
+        const search = props.location.search;
+        const params = new URLSearchParams(search);
+        let page = params.get('page');
+        console.log(page);
+        if(page){
+            page = parseInt(page);
+            return page;
+        }
+        return  1;
+    }
+
+    const navigateToPage = source => {
+        const url = props.history.location.pathname + '?page=' + source.target.value;
+        props.history.push(url);
     }
 
     return (
@@ -24,13 +50,17 @@ const Articles = props => {
                         option="delete" />
                 );
             })}
+            <div className="pagination">
+                <Pagination page={getPage()} totalItems={props.totalItems} navigate={navigateToPage} />
+            </div>
         </div>
     );
 }
 
 const mapStateToProps = state => {
     return {
-        articles: state.articles
+        articles: state.articles,
+        totalItems: state.totalItems
     };
 }
 

@@ -13,12 +13,24 @@
     border: 1px solid #ee4f05;
     border-radius: 4px;
     padding: 4px;
+    cursor: pointer;
 }
 
 .add-article button:hover,
 .add-article button:active {
-    cursor: pointer;
     background-color: white;
     color: #ee4f05;
+}
+
+.add-article button:disabled {
+    background-color: white;
+    color: gray;
+    cursor: not-allowed;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 

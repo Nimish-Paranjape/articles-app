@@ -3,6 +3,7 @@ import Modal from '../../components/Modal/Modal';
 import NewArticle from '../../components/NewArticle/NewArticle';
 import SingleArticle from '../../components/SingleArticle/SingleArticle';
 import ShareArticle from '../ShareArticle/ShareArticle';
+import Pagination from '../../components/Pagination/Pagination';
 import { connect } from 'react-redux'
 import { fetchArticlesInit, addArticleInit } from '../../store/actions'
 import './AddArticle.css';
@@ -12,7 +13,15 @@ const AddArticle = props => {
     let [showShareModal, toggleShareModal] = useState(false);
     let [newArticle, updateArticle] = useState({ id: null, title: '', content: '' });
 
-    useEffect(() => props.fetchArticlesInit(1), []);
+    useEffect(() => {
+        const search = props.location.search;
+        const params = new URLSearchParams(search);
+        let page = params.get('page');
+        if(!page)
+            page = 1;
+        console.log(page);
+        props.fetchArticlesInit(page);
+    }, [props.location]);
 
     const addHandler = () => {
         toggleAddModal(false);
@@ -47,6 +56,23 @@ const AddArticle = props => {
         updateArticle({id: null, title: '', content: ''});
     }
 
+    const getPage = () => {
+        const search = props.location.search;
+        const params = new URLSearchParams(search);
+        let page = params.get('page');
+        console.log(page);
+        if(page){
+            page = parseInt(page);
+            return page;
+        }
+        return  1;
+    }
+
+    const navigateToPage = source => {
+        const url = props.history.location.pathname + '?page=' + source.target.value;
+        props.history.push(url);
+    }
+
     return (
         <div className="add-article">
             <h1>Welcome to new-article page.</h1>
@@ -79,13 +105,17 @@ const AddArticle = props => {
                     );
                 })}
             </div>
+            <div className="pagination">
+                <Pagination page={getPage()} totalItems={props.totalItems} navigate={navigateToPage} />
+            </div>
         </div>
     );
 }
 
 const mapStateToProps = state => {
     return {
-        articles: state.articles
+        articles: state.articles,
+        totalItems: state.totalItems
     };
 }
 

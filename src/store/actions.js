@@ -15,10 +15,10 @@ export const fetchArticlesInit = page => {
     };
 }
 
-export const fetchArticlesSuccess = articles => {
+export const fetchArticlesSuccess = obj => {
     return {
         type: FETCH_ARTICLES_SUCCESS,
-        payload: articles
+        payload: obj
     };
 }
 

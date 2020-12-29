@@ -23,12 +23,17 @@ function* addArticleSaga(action) {
     yield call(fetchArticlesSaga);
 }
 
-function* fetchArticlesSaga() {
+function* fetchArticlesSaga(action) {
     let articles = [];
+    const page = action.payload ? action.payload : 1;
+    const itemsToSkip = (page-1)*2;
+    let totalItems = 0;
     const resData = yield localStorage.getItem('articles');
     if(resData)
         articles = JSON.parse(resData);
-    yield put(fetchArticlesSuccess(articles));
+    totalItems = articles.length;
+    articles = articles.slice(itemsToSkip, itemsToSkip+2);
+    yield put(fetchArticlesSuccess({articles: articles, totalItems: totalItems}));
 }
 
 function* deleteArticleSaga(action) {
