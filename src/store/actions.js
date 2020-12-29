@@ -1,4 +1,4 @@
-import { ADD_ARTICLE_INIT, FETCH_ARTICLES_INIT, FETCH_ARTICLES_SUCCESS, FETCH_ARTICLES_FAILED } from './constants';
+import { ADD_ARTICLE_INIT, FETCH_ARTICLES_INIT, FETCH_ARTICLES_SUCCESS, DELETE_ARTICLE } from './constants';
 
 export const addArticleInit = article => {
     // console.log('ACTION FIRED: ', article);
@@ -8,9 +8,10 @@ export const addArticleInit = article => {
     };
 }
 
-export const fetchArticlesInit = () => {
+export const fetchArticlesInit = page => {
     return {
-        type: FETCH_ARTICLES_INIT
+        type: FETCH_ARTICLES_INIT,
+        payload: page
     };
 }
 
@@ -21,9 +22,9 @@ export const fetchArticlesSuccess = articles => {
     };
 }
 
-export const fetchArticlesFailed = error => {
+export const deleteArticle = id => {
     return {
-        type: FETCH_ARTICLES_FAILED,
-        payload: error
+        type: DELETE_ARTICLE,
+        payload: id
     };
 }

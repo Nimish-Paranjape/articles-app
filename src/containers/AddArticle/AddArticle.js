@@ -12,7 +12,7 @@ const AddArticle = props => {
     let [showShareModal, toggleShareModal] = useState(false);
     let [newArticle, updateArticle] = useState({ id: null, title: '', content: '' });
 
-    useEffect(() => props.fetchArticlesInit(), []);
+    useEffect(() => props.fetchArticlesInit(1), []);
 
     const addHandler = () => {
         toggleAddModal(false);
@@ -32,29 +32,39 @@ const AddArticle = props => {
         toggleAddModal(true);
     }
 
-    const shareHandler = id => {
+    const addModalHandler = () => {
+        toggleAddModal(false);
+        updateArticle({ id: null, title: '', content: '' });
+    }
+
+    const shareModalHandler = id => {
         toggleShareModal(true);
-        updateArticle(props.articles[id]);
+        updateArticle({ ...props.articles[id], id: id });
+    }
+
+    const hideShareModal = () => {
+        toggleShareModal(false);
+        updateArticle({id: null, title: '', content: ''});
     }
 
     return (
         <div className="add-article">
             <h1>Welcome to new-article page.</h1>
-            <button onClick={() => toggleAddModal(true)}>ADD</button>
+            <button onClick={() => toggleAddModal(true)} className="add-btn">ADD</button>
             {showAddModal ? (
-                <Modal click={toggleAddModal}>
+                <Modal click={addModalHandler}>
                     <NewArticle
-                        click={toggleAddModal}
+                        click={addModalHandler}
                         article={newArticle}
                         add={addHandler}
                         change={changeHandler} />
                 </Modal>
             ) : null}
             {showShareModal ? (
-                <Modal click={toggleShareModal}>
-                    <ShareArticle article={newArticle} />
+                <Modal click={hideShareModal}>
+                    <ShareArticle article={newArticle} click={hideShareModal} />
                 </Modal>
-            ) : null }
+            ) : null}
             <div className="article-list">
                 {props.articles.map((article, index) => {
                     return (
@@ -65,7 +75,7 @@ const AddArticle = props => {
                             click={editHandler}
                             option="edit"
                             share={true}
-                            shareArticle={shareHandler} />
+                            shareArticle={shareModalHandler} />
                     );
                 })}
             </div>
@@ -81,7 +91,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchArticlesInit: () => dispatch(fetchArticlesInit()),
+        fetchArticlesInit: page => dispatch(fetchArticlesInit(page)),
         addArticleInit: article => dispatch(addArticleInit(article))
     };
 }

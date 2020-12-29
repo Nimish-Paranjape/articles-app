@@ -8,11 +8,24 @@
     align-items: center;
 }
 
-.article-card:hover {
-    cursor: pointer;
-}
-
 .options {
     display: flex;
     justify-content: flex-end;
+}
+
+button {
+    margin: 1rem;
+    font-size: 1.2rem;
+    background-color: #ee4f05;
+    color: white;
+    border: 1px solid #ee4f05;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+button:hover,
+button:active {
+    cursor: pointer;
+    background-color: white;
+    color: #ee4f05;
 }
