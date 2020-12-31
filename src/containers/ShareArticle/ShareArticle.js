@@ -35,14 +35,19 @@ const ShareArticle = props => {
             currentForm.error = 'Please complete Article form..';
             return isValid;
         }
-        isValid = Object.keys(currentForm.myConnections).every(connection => {
-            if(currentForm.myConnections[connection]) {
-                if(currentForm.inputs[connection]==='')
-                    currentForm.error = 'Please fill the ' + connection + ' field.';
-                return currentForm.inputs[connection]!=='';
-            }
-            return true;
-        });
+        isValid = !Object.keys(currentForm.inputs).every(input => currentForm.inputs[input]==='');
+        if(!isValid) 
+            currentForm.error = 'Please fill altleast one share input..';
+        if(isValid) {
+            isValid = Object.keys(currentForm.myConnections).every(connection => {
+                if(currentForm.myConnections[connection]) {
+                    if(currentForm.inputs[connection]==='')
+                        currentForm.error = 'Please fill the ' + connection + ' field.';
+                    return currentForm.inputs[connection]!=='';
+                }
+                return true;
+            });
+        }
         if(isValid) {
             isValid = Object.keys(currentForm.advisorConnections).every(connection => {
                 if(currentForm.advisorConnections[connection]) {
