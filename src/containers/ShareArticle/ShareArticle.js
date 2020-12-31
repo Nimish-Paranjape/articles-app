@@ -35,7 +35,14 @@ const ShareArticle = props => {
             currentForm.error = 'Please complete Article form..';
             return isValid;
         }
-        isValid = !Object.keys(currentForm.inputs).every(input => currentForm.inputs[input]==='');
+        isValid = Object.keys(currentForm.inputs).every(input => {
+            if(currentForm.inputs[input]!=='') {
+                if(!currentForm.myConnections[input])
+                    currentForm.error = 'Please select ' + input + 'checkbox..';
+                return currentForm.myConnections[input];
+            }
+            return true;
+        });
         if(!isValid) 
             currentForm.error = 'Please fill altleast one share input..';
         if(isValid) {
