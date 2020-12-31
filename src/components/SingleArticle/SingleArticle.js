@@ -8,7 +8,6 @@ const singleArticle = props => {
             <p>{props.article.content.substring(0, 50)}...</p>
             <div className="options">
                 <button onClick={() => props.click(props.id)}>{props.option}</button>
-                {props.share ? <button onClick={() => props.shareArticle(props.id)}>Share</button> : null}
             </div>
         </div>
     );

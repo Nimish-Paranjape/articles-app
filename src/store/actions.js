@@ -1,10 +1,10 @@
 import { ADD_ARTICLE_INIT, FETCH_ARTICLES_INIT, FETCH_ARTICLES_SUCCESS, DELETE_ARTICLE } from './constants';
 
-export const addArticleInit = article => {
+export const addArticleInit = obj => {
     // console.log('ACTION FIRED: ', article);
     return {
         type: ADD_ARTICLE_INIT,
-        payload: article
+        payload: obj
     };
 }
 

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import NewArticle from '../../components/NewArticle/NewArticle';
 import './ShareArticle.css';
 
 const ShareArticle = props => {
@@ -28,6 +29,12 @@ const ShareArticle = props => {
 
     const checkFormValidity = currentForm => {
         let isValid = false;
+        isValid = props.checkArticle();
+        console.log('Article valid = ', isValid);
+        if(!isValid){
+            currentForm.error = 'Please complete Article form..';
+            return isValid;
+        }
         isValid = Object.keys(currentForm.myConnections).every(connection => {
             if(currentForm.myConnections[connection]) {
                 if(currentForm.inputs[connection]==='')
@@ -79,15 +86,20 @@ const ShareArticle = props => {
     }
 
     const shareHandler = () => {
-        console.log(form);
-        props.click();
+        const updatedForm = {
+            inputs: form.inputs,
+            myConnections: form.myConnections,
+            advisorConnections: form.advisorConnections
+        };
+        props.share(updatedForm);
     }
 
     return (
         <div className="outer-div">
             <div className="article-thumbnail">
-                <h2>{props.article.title}</h2>
-                <p>{props.article.content.substring(0, 250)}</p>
+                <NewArticle
+                    article={props.article}
+                    change={props.change} />
             </div>
             <div className="share-options">
                 <div className="social-media-inputs">
@@ -96,6 +108,7 @@ const ShareArticle = props => {
                             className="twitter"
                             maxLength={100}
                             name="twitter"
+                            defaultValue={props.article.form ? props.article.form.inputs.twitter : ''}
                             onChange={e => inputChangeHandler(e)}>
                         </textarea>
                         <i className="fa fa-twitter" aria-hidden="true"></i>
@@ -105,6 +118,7 @@ const ShareArticle = props => {
                             className="facebook"
                             maxLength={150}
                             name="facebook"
+                            defaultValue={props.article.form ? props.article.form.inputs.facebook : ''}
                             onChange={e => inputChangeHandler(e)}>
                         </textarea>
                         <i className="fa fa-facebook-square" aria-hidden="true"></i>
@@ -114,6 +128,7 @@ const ShareArticle = props => {
                             className="linkedIn"
                             maxLength={150}
                             name="linkedIn"
+                            defaultValue={props.article.form ? props.article.form.inputs.linkedIn : ''}
                             onChange={e => inputChangeHandler(e)}>
                         </textarea>
                         <i className="fa fa-linkedin" aria-hidden="true"></i>
@@ -122,6 +137,7 @@ const ShareArticle = props => {
                         <textarea
                             className="email"
                             name="email"
+                            defaultValue={props.article.form ? props.article.form.inputs.email : ''}
                             onChange={e => inputChangeHandler(e)}></textarea>
                         <i className="fa fa-envelope" aria-hidden="true"></i>
                     </div>
@@ -134,6 +150,7 @@ const ShareArticle = props => {
                             type="checkbox"
                             name="twitter"
                             value="twitter"
+                            defaultChecked={props.article.form ? props.article.form.myConnections.twitter : false}
                             onClick={e => myConnectionsHandler(e)}>
                         </input>
                         <label htmlFor="twitter">Twitter</label>
@@ -141,6 +158,7 @@ const ShareArticle = props => {
                             type="checkbox"
                             name="linkedIn"
                             value="linkedIn"
+                            defaultChecked={props.article.form ? props.article.form.myConnections.linkedIn : false}
                             onClick={e => myConnectionsHandler(e)}>
                         </input>
                         <label htmlFor="linkedIn">LinkedIn</label>
@@ -148,6 +166,7 @@ const ShareArticle = props => {
                             type="checkbox" 
                             name="facebook" 
                             value="facebook" 
+                            defaultChecked={props.article.form ? props.article.form.myConnections.facebook : false}
                             onClick={e => myConnectionsHandler(e)}>
                         </input>
                         <label htmlFor="facebook">Facebook</label>
@@ -155,6 +174,7 @@ const ShareArticle = props => {
                             type="checkbox" 
                             name="email" 
                             value="email" 
+                            defaultChecked={props.article.form ? props.article.form.myConnections.email : false}
                             onClick={e => myConnectionsHandler(e)}>
                         </input>
                         <label htmlFor="email">Email</label>
@@ -166,7 +186,8 @@ const ShareArticle = props => {
                         <input 
                             type="checkbox" 
                             name="twitter" 
-                            value="twitter" 
+                            value="twitter"
+                            defaultChecked={props.article.form ? props.article.form.advisorConnections.twitter : false} 
                             onClick={e => advConnectionsHandler(e)}>
                         </input>
                         <label htmlFor="twitter">Twitter</label>
@@ -174,6 +195,7 @@ const ShareArticle = props => {
                             type="checkbox" 
                             name="linkedIn" 
                             value="linkedIn" 
+                            defaultChecked={props.article.form ? props.article.form.advisorConnections.linkedIn : false}
                             onClick={e => advConnectionsHandler(e)}>
                         </input>
                         <label htmlFor="linkedIn">LinkedIn</label>
@@ -181,6 +203,7 @@ const ShareArticle = props => {
                             type="checkbox" 
                             name="facebook" 
                             value="facebook" 
+                            defaultChecked={props.article.form ? props.article.form.advisorConnections.facebook : false}
                             onClick={e => advConnectionsHandler(e)}>
                         </input>
                         <label htmlFor="facebook">Facebook</label>
@@ -188,6 +211,7 @@ const ShareArticle = props => {
                             type="checkbox" 
                             name="email" 
                             value="email" 
+                            defaultChecked={props.article.form ? props.article.form.advisorConnections.email : false}
                             onClick={e => advConnectionsHandler(e)}>
                         </input>
                         <label htmlFor="email">Email</label>
@@ -200,7 +224,7 @@ const ShareArticle = props => {
                 ) : null}
                 <button type="button" disabled={!form.valid} onClick={shareHandler}>Share</button>
             </div>
-            <button type="button" onClick={() => props.click(false)}>X</button>
+            <button type="button" onClick={props.close}>X</button>
         </div>
     );
 }

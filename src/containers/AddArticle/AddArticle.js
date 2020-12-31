@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Modal from '../../components/Modal/Modal';
-import NewArticle from '../../components/NewArticle/NewArticle';
 import SingleArticle from '../../components/SingleArticle/SingleArticle';
 import ShareArticle from '../ShareArticle/ShareArticle';
 import Pagination from '../../components/Pagination/Pagination';
@@ -10,23 +9,27 @@ import './AddArticle.css';
 
 const AddArticle = props => {
     let [showAddModal, toggleAddModal] = useState(false);
-    let [showShareModal, toggleShareModal] = useState(false);
-    let [newArticle, updateArticle] = useState({ id: null, title: '', content: '' });
+    let [newArticle, updateArticle] = useState({ id: null, title: '', content: ''});
 
     useEffect(() => {
-        const search = props.location.search;
-        const params = new URLSearchParams(search);
-        let page = params.get('page');
-        if(!page)
-            page = 1;
-        console.log(page);
-        props.fetchArticlesInit(page);
+        // const search = props.location.search;
+        // const params = new URLSearchParams(search);
+        // let page = params.get('page');
+        // if(!page)
+        //     page = 1;
+        // console.log(page);
+        props.fetchArticlesInit(getPage());
     }, [props.location]);
 
-    const addHandler = () => {
+    const addHandler = form => {
         toggleAddModal(false);
-        props.addArticleInit(newArticle);
-        updateArticle({ id: null, title: '', content: '' });
+        props.addArticleInit({article: newArticle, form: form});
+        props.fetchArticlesInit(getPage());
+        updateArticle({ id: null, title: '', content: ''});
+    }
+
+    const checkArticleValidity = () => {
+        return newArticle.title.length>0 && newArticle.content.length>0;
     }
 
     const changeHandler = source => {
@@ -37,6 +40,7 @@ const AddArticle = props => {
     const editHandler = id => {
         newArticle = props.articles[id];
         newArticle.id = id;
+        console.log(newArticle);
         updateArticle(newArticle);
         toggleAddModal(true);
     }
@@ -44,16 +48,6 @@ const AddArticle = props => {
     const addModalHandler = () => {
         toggleAddModal(false);
         updateArticle({ id: null, title: '', content: '' });
-    }
-
-    const shareModalHandler = id => {
-        toggleShareModal(true);
-        updateArticle({ ...props.articles[id], id: id });
-    }
-
-    const hideShareModal = () => {
-        toggleShareModal(false);
-        updateArticle({id: null, title: '', content: ''});
     }
 
     const getPage = () => {
@@ -79,16 +73,12 @@ const AddArticle = props => {
             <button onClick={() => toggleAddModal(true)} className="add-btn">ADD</button>
             {showAddModal ? (
                 <Modal click={addModalHandler}>
-                    <NewArticle
-                        click={addModalHandler}
-                        article={newArticle}
-                        add={addHandler}
-                        change={changeHandler} />
-                </Modal>
-            ) : null}
-            {showShareModal ? (
-                <Modal click={hideShareModal}>
-                    <ShareArticle article={newArticle} click={hideShareModal} />
+                    <ShareArticle 
+                        article={newArticle} 
+                        share={addHandler}
+                        change={changeHandler}
+                        checkArticle={checkArticleValidity}
+                        close={addModalHandler} />
                 </Modal>
             ) : null}
             <div className="article-list">
@@ -99,15 +89,15 @@ const AddArticle = props => {
                             id={index}
                             key={index}
                             click={editHandler}
-                            option="edit"
-                            share={true}
-                            shareArticle={shareModalHandler} />
+                            option="edit" />
                     );
                 })}
             </div>
-            <div className="pagination">
-                <Pagination page={getPage()} totalItems={props.totalItems} navigate={navigateToPage} />
-            </div>
+            {props.articles.length>0 ? (
+                <div className="pagination">
+                    <Pagination page={getPage()} totalItems={props.totalItems} navigate={navigateToPage} />
+                </div>
+            ) : null}
         </div>
     );
 }

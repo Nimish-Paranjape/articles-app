@@ -11,16 +11,15 @@ export function* articleSaga(action) {
 function* addArticleSaga(action) {
     console.log('SAGA FIRED: ', action.payload);
     let articles = [];
-    const id = action.payload.id;
+    const id = action.payload.article.id;
     const resData = yield localStorage.getItem('articles');
     if(resData)
         articles = JSON.parse(resData);
     if(id!=null)
-        articles[id] = {title: action.payload.title, content: action.payload.content}
+        articles[id] = {title: action.payload.article.title, content: action.payload.article.content, form: action.payload.form};
     else
-        articles.push({title: action.payload.title, content: action.payload.content});
+        articles.push({title: action.payload.article.title, content: action.payload.article.content, form: action.payload.form});
     yield localStorage.setItem('articles', JSON.stringify(articles));
-    yield call(fetchArticlesSaga);
 }
 
 function* fetchArticlesSaga(action) {
@@ -44,6 +43,5 @@ function* deleteArticleSaga(action) {
         articles = JSON.parse(resData);
     articles.splice(action.payload, 1);
     yield localStorage.setItem('articles', JSON.stringify(articles));
-    yield call(fetchArticlesSaga);
 }
 

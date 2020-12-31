@@ -7,17 +7,18 @@ import Pagination from '../../components/Pagination/Pagination';
 const Articles = props => {
     
     useEffect(() => {
-        const search = props.location.search;
-        const params = new URLSearchParams(search);
-        let page = params.get('page');
-        if(!page)
-            page = 1;
-        console.log(page);
-        props.fetchArticlesInit(page);
+        // const search = props.location.search;
+        // const params = new URLSearchParams(search);
+        // let page = params.get('page');
+        // if(!page)
+        //     page = 1;
+        // console.log(page);
+        props.fetchArticlesInit(getPage());
     }, [props.location]);
 
     const deleteHandler = id => {
         props.deleteArticle(id);
+        props.fetchArticlesInit(getPage());
     }
 
     const getPage = () => {
